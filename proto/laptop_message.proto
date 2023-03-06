@@ -1,7 +1,7 @@
 syntax = "proto3";
 
 option go_package = "/pb";
-package ikehakinyemi.pcbook;
+
 import "processor_message.proto";
 import "memory_message.proto";
 import "storage_message.proto";

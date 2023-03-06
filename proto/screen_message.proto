@@ -1,6 +1,5 @@
 syntax = "proto3";
 
-package ikehakinyemi.pcbook;
 option go_package = "/pb";
 
 message Screen {
