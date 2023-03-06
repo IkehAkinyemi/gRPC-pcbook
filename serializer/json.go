@@ -20,4 +20,3 @@ func ProtobufToJSON(message proto.Message) (string, error) {
 
 	return string(data), nil
 }
-

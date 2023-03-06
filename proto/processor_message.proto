@@ -2,7 +2,6 @@ syntax = "proto3";
 
 option go_package = "/pb";
 import "memory_message.proto";
-package ikehakinyemi.pcbook;
 
 message CPU {
   string brand = 1;
