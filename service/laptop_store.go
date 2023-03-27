@@ -1,8 +1,10 @@
 package service
 
 import (
+	"context"
 	"errors"
 	"fmt"
+	"log"
 	"sync"
 
 	"github.com/IkehAkinyemi/pcbook/pb"
@@ -19,6 +21,8 @@ type LaptopStore interface {
 	Save(laptop *pb.Laptop) error
 	// Find finds a laptop by ID
 	Find(id string) (*pb.Laptop, error)
+	// Search searches for laptops with filter, returns one by one via the found function
+	Search(ctx context.Context, filter *pb.Filter, found func(laptop *pb.Laptop) error) error
 }
 
 // A InMemoryLaptopStore stores laptop in memory.
@@ -43,14 +47,12 @@ func (store *InMemoryLaptopStore) Save(laptop *pb.Laptop) error {
 		return ErrAlreadyExists
 	}
 
-	// deep copy
-	other := &pb.Laptop{}
-	err := copier.Copy(other, laptop)
+	copy, err := deepCopy(laptop)
 	if err != nil {
-		return fmt.Errorf("cannot copy laptop data: %w", err)
+		return err
 	}
 
-	store.data[other.Id] = other
+	store.data[copy.Id] = copy
 
 	return nil
 }
@@ -65,7 +67,81 @@ func (store *InMemoryLaptopStore) Find(id string) (*pb.Laptop, error) {
 		return nil, ErrNotFound
 	}
 
-	// deep copy
+	return deepCopy(laptop)
+}
+
+// Search returns laptops that match the search criteria in filter.
+func (store *InMemoryLaptopStore) Search(
+	ctx context.Context,
+	filter *pb.Filter, 
+	found func(laptop *pb.Laptop) error,
+) error {
+	store.mutex.RLock()
+	defer store.mutex.RUnlock()
+
+	for _, laptop := range store.data {
+		if ctx.Err() == context.Canceled || ctx.Err() == context.DeadlineExceeded {
+			log.Printf("context is cancelled")
+			return errors.New("context is cancelled")
+		}
+		if isQualified(filter, laptop) {
+			copy, err := deepCopy(laptop)
+			if err != nil {
+				return err
+			}
+
+			err = found(copy)
+			if err != nil {
+				return err
+			}
+		}
+	}
+
+	return nil
+}
+
+func isQualified(filter *pb.Filter, laptop *pb.Laptop) bool {
+	if laptop.GetPriceUsd() > filter.GetMaxPriceUsd() {
+		return false
+	}
+
+	if laptop.GetCpu().GetNumberCores() < filter.GetMinCpuCores() {
+		return false
+	}
+
+	if laptop.GetCpu().GetMinGhz() < filter.GetMinCpuGhz() {
+		return false
+	}
+
+	if toBit(laptop.GetRam()) < toBit(filter.GetMinRam()) {
+		return false
+	}
+
+	return true
+}
+
+func toBit(memory *pb.Memory) uint64 {
+	val := memory.GetValue()
+	
+	switch memory.GetUnit() {
+	case pb.Memory_BIT:
+		return val
+	case pb.Memory_BYTE:
+		return val << 3 // 8 = 2^3
+	case pb.Memory_KILOBYTE:
+		return val << 13 // 13 = 2^10 * 2^3= 2^13
+	case pb.Memory_MEGABYTE:
+		return val << 23
+	case pb.Memory_GIGABYTE:
+		return val << 33
+	case pb.Memory_TERABYTE:
+		return val << 43
+	default:
+		return 0
+	}
+}
+
+func deepCopy(laptop *pb.Laptop) (*pb.Laptop, error) {
 	tmp := &pb.Laptop{}
 	err := copier.Copy(tmp, laptop)
 	if err != nil {
