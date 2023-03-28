@@ -5,10 +5,10 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
-//NewKeyboard returns a new sample keyboard
+// NewKeyboard returns a new sample keyboard
 func NewKeyboard() *pb.Keyboard {
-	keyboard := &pb.Keyboard {
-		Layout: randomKeyboardLayout(),
+	keyboard := &pb.Keyboard{
+		Layout:  randomKeyboardLayout(),
 		Backlit: randomBool(),
 	}
 
@@ -27,12 +27,12 @@ func NewCPU() *pb.CPU {
 	maxGhz := randomFloat64(minGhz, 5.0)
 
 	cpu := &pb.CPU{
-		Brand: brand,
-		Name: name,
-		NumberCores: uint32(cores),
+		Brand:         brand,
+		Name:          name,
+		NumberCores:   uint32(cores),
 		NumberThreads: uint32(threads),
-		MinGhz: minGhz,
-		MaxGhz: maxGhz,
+		MinGhz:        minGhz,
+		MaxGhz:        maxGhz,
 	}
 
 	return cpu
@@ -48,12 +48,12 @@ func NewGPU() *pb.GPU {
 
 	memory := &pb.Memory{
 		Value: uint64(randomInt(2, 6)),
-		Unit: pb.Memory_GIGABYTE,
+		Unit:  pb.Memory_GIGABYTE,
 	}
 
 	gpu := &pb.GPU{
-		Brand: brand,
-		Name: name,
+		Brand:  brand,
+		Name:   name,
 		MinGhz: minGhz,
 		MaxGhz: maxGhz,
 		Memory: memory,
@@ -64,9 +64,9 @@ func NewGPU() *pb.GPU {
 
 // NewRam returns a new sample RAM
 func NewRam() *pb.Memory {
-	ram := &pb.Memory {
+	ram := &pb.Memory{
 		Value: uint64(randomInt(4, 64)),
-		Unit: pb.Memory_GIGABYTE,
+		Unit:  pb.Memory_GIGABYTE,
 	}
 
 	return ram
@@ -74,11 +74,11 @@ func NewRam() *pb.Memory {
 
 // NewSSD returns a new sample SSD storage
 func NewSSD() *pb.Storage {
-	ssd := &pb.Storage {
+	ssd := &pb.Storage{
 		Driver: pb.Storage_SSD,
 		Memory: &pb.Memory{
 			Value: uint64(randomInt(128, 1024)),
-			Unit: pb.Memory_GIGABYTE,
+			Unit:  pb.Memory_GIGABYTE,
 		},
 	}
 
@@ -87,11 +87,11 @@ func NewSSD() *pb.Storage {
 
 // NewHDD returns a new sample HDD storage
 func NewHDD() *pb.Storage {
-	hdd := &pb.Storage {
+	hdd := &pb.Storage{
 		Driver: pb.Storage_HDD,
 		Memory: &pb.Memory{
 			Value: uint64(randomInt(1, 6)),
-			Unit: pb.Memory_TERABYTE,
+			Unit:  pb.Memory_TERABYTE,
 		},
 	}
 
@@ -100,10 +100,10 @@ func NewHDD() *pb.Storage {
 
 // NewScreen returns a new sample screen
 func NewScreen() *pb.Screen {
-	screen := &pb.Screen {
-		SizeInch: randomFloat32(13, 17),
+	screen := &pb.Screen{
+		SizeInch:   randomFloat32(13, 17),
 		Resolution: randomScreenResolution(),
-		Panel: randomScreenPanel(),
+		Panel:      randomScreenPanel(),
 		Multitouch: randomBool(),
 	}
 
@@ -116,22 +116,27 @@ func NewLaptop() *pb.Laptop {
 	name := randomLaptopName(brand)
 
 	laptop := &pb.Laptop{
-		Id: randomID(),
-		Brand: brand,
-		Name: name,
-		Cpu: NewCPU(),
-		Ram: NewRam(),
-		Gpus: []*pb.GPU{NewGPU()},
+		Id:       randomID(),
+		Brand:    brand,
+		Name:     name,
+		Cpu:      NewCPU(),
+		Ram:      NewRam(),
+		Gpus:     []*pb.GPU{NewGPU()},
 		Storages: []*pb.Storage{NewSSD(), NewHDD()},
-		Screen: NewScreen(),
+		Screen:   NewScreen(),
 		Keyboard: NewKeyboard(),
 		Weight: &pb.Laptop_WeightKg{
 			WeightKg: randomFloat64(1.0, 3.0),
 		},
-		PriceUsd: randomFloat64(1500, 3000),
+		PriceUsd:    randomFloat64(1500, 3000),
 		ReleaseYear: uint32(randomInt(2015, 2019)),
-		UpdatedAt: timestamppb.Now(),
+		UpdatedAt:   timestamppb.Now(),
 	}
 
 	return laptop
+}
+
+// RandomLaptopScore returns a random laptop score.
+func RandomLaptopScore() float64 {
+	return float64(randomInt(1, 10))
 }

@@ -38,7 +38,7 @@ func randomCPUName(brand string) string {
 	)
 }
 
-func randomGPUName(brand string) string{
+func randomGPUName(brand string) string {
 	if brand == "NVIDIA" {
 		return randomStringFromSet(
 			"RTX 2060",
@@ -46,7 +46,7 @@ func randomGPUName(brand string) string{
 			"GTX 1660-Ti",
 			"GTX 1070",
 		)
-	} 
+	}
 
 	return randomStringFromSet(
 		"RX 590",
@@ -70,7 +70,7 @@ func randomScreenResolution() *pb.Screen_Resolution {
 
 	resolution := &pb.Screen_Resolution{
 		Height: uint32(height),
-		Width: uint32(width),
+		Width:  uint32(width),
 	}
 
 	return resolution

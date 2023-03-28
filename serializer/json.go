@@ -6,11 +6,11 @@ import (
 )
 
 func ProtobufToJSON(message proto.Message) (string, error) {
-	marshaler := jsonpb.MarshalOptions {
-		UseEnumNumbers: false,
+	marshaler := jsonpb.MarshalOptions{
+		UseEnumNumbers:  false,
 		EmitUnpopulated: true,
-		Indent: "  ",
-		UseProtoNames: true,
+		Indent:          "  ",
+		UseProtoNames:   true,
 	}
 
 	data, err := marshaler.Marshal(message)

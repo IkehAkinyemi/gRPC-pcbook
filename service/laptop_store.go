@@ -28,12 +28,12 @@ type LaptopStore interface {
 // A InMemoryLaptopStore stores laptop in memory.
 type InMemoryLaptopStore struct {
 	mutex sync.RWMutex
-	data map[string]*pb.Laptop
+	data  map[string]*pb.Laptop
 }
 
 // NewInMemoryLaptopStore returns a new InMemoryLaptopStore.
 func NewInMemoryLaptopStore() *InMemoryLaptopStore {
-	return &InMemoryLaptopStore {
+	return &InMemoryLaptopStore{
 		data: make(map[string]*pb.Laptop),
 	}
 }
@@ -73,7 +73,7 @@ func (store *InMemoryLaptopStore) Find(id string) (*pb.Laptop, error) {
 // Search returns laptops that match the search criteria in filter.
 func (store *InMemoryLaptopStore) Search(
 	ctx context.Context,
-	filter *pb.Filter, 
+	filter *pb.Filter,
 	found func(laptop *pb.Laptop) error,
 ) error {
 	store.mutex.RLock()
@@ -122,7 +122,7 @@ func isQualified(filter *pb.Filter, laptop *pb.Laptop) bool {
 
 func toBit(memory *pb.Memory) uint64 {
 	val := memory.GetValue()
-	
+
 	switch memory.GetUnit() {
 	case pb.Memory_BIT:
 		return val
