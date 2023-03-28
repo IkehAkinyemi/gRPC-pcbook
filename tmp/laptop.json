@@ -1,25 +1,25 @@
 {
-  "id":  "dc7b2337-9bf6-4803-a5e1-aa43a2e67464",
-  "brand":  "Apple",
-  "name":  "Macbook Pro",
+  "id":  "f1720c95-b6ae-442a-85ed-5436782d2874",
+  "brand":  "Dell",
+  "name":  "Alienware",
   "cpu":  {
-    "brand":  "Intel",
-    "name":  "Core i9-9980HK",
-    "number_cores":  6,
-    "number_threads":  8,
-    "min_ghz":  3.395672449924797,
-    "max_ghz":  3.495151939098129
+    "brand":  "AMD",
+    "name":  "Ryzen 3 PRO 3200GE",
+    "number_cores":  7,
+    "number_threads":  7,
+    "min_ghz":  2.8576643319514146,
+    "max_ghz":  3.3976640367376953
   },
   "ram":  {
-    "value":  "55",
+    "value":  "28",
     "unit":  "GIGABYTE"
   },
   "gpus":  [
     {
-      "brand":  "NVIDIA",
-      "name":  "RTX 2070",
-      "min_ghz":  1.0822134450305476,
-      "max_ghz":  1.247594046393688,
+      "brand":  "AMD",
+      "name":  "RX 5700-XT",
+      "min_ghz":  1.389557608153614,
+      "max_ghz":  1.5165650670115272,
       "memory":  {
         "value":  "5",
         "unit":  "GIGABYTE"
@@ -30,33 +30,33 @@
     {
       "driver":  "SSD",
       "memory":  {
-        "value":  "601",
+        "value":  "843",
         "unit":  "GIGABYTE"
       }
     },
     {
       "driver":  "HDD",
       "memory":  {
-        "value":  "3",
+        "value":  "1",
         "unit":  "TERABYTE"
       }
     }
   ],
   "screen":  {
-    "size_inch":  16.838331,
+    "size_inch":  13.863633,
     "resolution":  {
-      "width":  3621,
-      "height":  2037
+      "width":  1978,
+      "height":  1113
     },
-    "panel":  "OLED",
+    "panel":  "IPS",
     "multitouch":  false
   },
   "keyboard":  {
-    "layout":  "AZERTY",
-    "backlit":  true
+    "layout":  "QWERTZ",
+    "backlit":  false
   },
-  "weight_kg":  1.9182788801254325,
-  "price_usd":  2985.860273724187,
+  "weight_kg":  2.3338115836122375,
+  "price_usd":  1912.87029978757,
   "release_year":  2019,
-  "updated_at":  "2023-03-08T18:40:34.743184Z"
+  "updated_at":  "2023-03-28T05:08:48.457677Z"
 }
