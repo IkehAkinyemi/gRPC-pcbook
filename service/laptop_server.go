@@ -32,6 +32,7 @@ func NewLaptopServer(laptopStore LaptopStore, imageStore ImageStore, ratingStore
 	}
 }
 
+// CreateLaptop is controller for creating laptops.
 func (server *LaptopServer) CreateLaptop(
 	ctx context.Context,
 	req *pb.CreateLaptopRequest,
@@ -75,6 +76,7 @@ func (server *LaptopServer) CreateLaptop(
 	return res, nil
 }
 
+// SearchLaptop is controller for searching laptops by filter params.
 func (server *LaptopServer) SearchLaptop(
 	req *pb.SearchLaptopRequest,
 	stream pb.LaptopService_SearchLaptopServer,
@@ -212,8 +214,8 @@ func (server *LaptopServer) RateLaptop(stream pb.LaptopService_RateLaptopServer)
 		}
 
 		res := &pb.RateLaptopResponse{
-			LaptopId: laptopID,
-			RatingCount: rating.Count,
+			LaptopId:     laptopID,
+			RatingCount:  rating.Count,
 			AverageScore: rating.Sum / float64(rating.Count),
 		}
 
@@ -222,7 +224,7 @@ func (server *LaptopServer) RateLaptop(stream pb.LaptopService_RateLaptopServer)
 			return logError(status.Errorf(codes.Unknown, "cannot send stream response: %v", err))
 		}
 	}
-	
+
 	return nil
 }
 

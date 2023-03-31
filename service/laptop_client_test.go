@@ -195,7 +195,7 @@ func TestRateLaptopClient(t *testing.T) {
 
 	serverAddress := startTestLaptopServer(t, laptopStore, nil, ratingStore)
 	laptopClient := newTestLaptopClient(t, serverAddress)
-	
+
 	stream, err := laptopClient.RateLaptop(context.Background())
 	require.NoError(t, err)
 
@@ -204,9 +204,9 @@ func TestRateLaptopClient(t *testing.T) {
 
 	n := len(scores)
 	for i := 0; i < n; i++ {
-		req :=&pb.RateLaptopRequest{
+		req := &pb.RateLaptopRequest{
 			LaptopId: laptop.GetId(),
-			Score: scores[i],
+			Score:    scores[i],
 		}
 
 		err := stream.Send(req)
