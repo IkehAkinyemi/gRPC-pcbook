@@ -13,12 +13,12 @@ type RatingStore interface {
 // A Rating contains the rating information of a laptop.
 type Rating struct {
 	Count uint32
-	Sum float64
+	Sum   float64
 }
 
 // InMemoryRatingStore stores laptop ratings in memory
 type InMemoryRatingStore struct {
-	mutex sync.RWMutex
+	mutex  sync.RWMutex
 	rating map[string]*Rating
 }
 
@@ -38,7 +38,7 @@ func (store *InMemoryRatingStore) Add(laptopID string, score float64) (*Rating, 
 	if rating == nil {
 		rating = &Rating{
 			Count: 1,
-			Sum: score,
+			Sum:   score,
 		}
 	} else {
 		rating.Count++
