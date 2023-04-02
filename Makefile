@@ -5,8 +5,23 @@ gen:
 clean:
 	rm -rf pb/*.go
 
+server1:
+	go run cmd/server/main.go -port 50051
+
+server2:
+	go run cmd/server/main.go -port 50052
+
+server1-tls:
+	go run cmd/server/main.go -port 50051 -tls
+
+server2-tls:
+	go run cmd/server/main.go -port 50052 -tls
+
 server:
 	go run cmd/server/main.go -port $(PORT)
+
+client-tls:
+	go run cmd/client/main.go -srv-addr "localhost:$(PORT)" -tls
 
 client:
 	go run cmd/client/main.go -srv-addr "localhost:$(PORT)"
@@ -21,4 +36,4 @@ test:
 cert:
 	cd cert; ./generate_ssl_cert.sh; cd ..
 
-.PHONY: gen clean server client keys test cert
+.PHONY: gen clean server client keys test cert server1 server2 server1-tls server2-tls client-tls
