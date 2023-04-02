@@ -106,7 +106,5 @@ func (interceptor *AuthInterceptor) refreshToken() error {
 	}
 
 	interceptor.accessToken = accessToken
-	log.Printf("token refreshed: %s", accessToken)
-
 	return nil
 }
