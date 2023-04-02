@@ -15,6 +15,7 @@ import (
 	"github.com/IkehAkinyemi/pcbook/sample"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
+	"google.golang.org/grpc/credentials/insecure"
 )
 
 const (
@@ -25,15 +26,21 @@ const (
 
 func main() {
 	address := flag.String("srv-addr", "", "server address to dial")
+	enableTLS := flag.Bool("tls", false, "enable SSL/TLS")
 	flag.Parse()
-	log.Printf("dialing server %s", *address)
+	log.Printf("dialing server %s, with TLS = %t", *address, *enableTLS)
 
-	tlsCreds, err := loadTLSCredentials()
-	if err != nil {
-		log.Fatal("cannot load TLS credentials: ", err)
+	dialOption := grpc.WithTransportCredentials(insecure.NewCredentials())
+
+	if *enableTLS {
+		tlsCreds, err := loadTLSCredentials()
+		if err != nil {
+			log.Fatal("cannot load TLS credentials: ", err)
+		}
+		dialOption = grpc.WithTransportCredentials(tlsCreds)
 	}
 
-	cc1, err := grpc.Dial(*address, grpc.WithTransportCredentials(tlsCreds))
+	cc1, err := grpc.Dial(*address, dialOption)
 	if err != nil {
 		log.Fatalf("error occurred dialing address: %v", err)
 	}
@@ -45,7 +52,7 @@ func main() {
 
 	cc2, err := grpc.Dial(
 		*address,
-		grpc.WithTransportCredentials(tlsCreds),
+		dialOption,
 		grpc.WithUnaryInterceptor(authInterceptor.Unary()),
 		grpc.WithStreamInterceptor(authInterceptor.Stream()),
 	)
@@ -147,7 +154,7 @@ func loadTLSCredentials() (credentials.TransportCredentials, error) {
 	// Create the credentials and return it
 	config := &tls.Config{
 		Certificates: []tls.Certificate{clientCert},
-		RootCAs: certPool,
+		RootCAs:      certPool,
 	}
 
 	return credentials.NewTLS(config), nil
