@@ -18,4 +18,7 @@ keys:
 test:
 	go test -cover -race ./...
 
-.PHONY: gen clean server client keys test
+cert:
+	cd cert; ./generate_ssl_cert.sh; cd ..
+
+.PHONY: gen clean server client keys test cert
