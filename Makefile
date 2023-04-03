@@ -1,6 +1,6 @@
 PORT=8080
 gen:
-	protoc -I=proto --go_out=. --go-grpc_out=. proto/*.proto
+	protoc -I=proto --go_out=. --go-grpc_out=. --grpc-gateway_out=. --openapiv2_out=:swagger proto/*.proto
 
 clean:
 	rm -rf pb/*.go
@@ -19,6 +19,9 @@ server2-tls:
 
 server:
 	go run cmd/server/main.go -port $(PORT)
+
+rest:
+	go run cmd/server/main.go -port 8081 -srv-type rest -grpc-endpoint 0.0.0.0:8080
 
 client-tls:
 	go run cmd/client/main.go -srv-addr "localhost:$(PORT)" -tls
